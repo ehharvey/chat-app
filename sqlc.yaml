@@ -1,0 +1,14 @@
+---
+version: "2"
+sql:
+  - name: inventory
+    schema:
+      - internal/infrastructure/db/pg/schema_migration/20250809211956_foo.sql
+    queries:
+      - internal/infrastructure/db/pg/foo/sql/queries/20250809211956_foo.sql
+    engine: postgresql
+    gen:
+      go:
+        out: internal/infrastructure/db/pg/foo/generated
+        package: generated
+        sql_package: pgx/v5

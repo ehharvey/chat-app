@@ -1,0 +1,66 @@
+---
+# Minio Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: minio }
+  template:
+    metadata:
+      labels: { app: minio }
+    spec:
+      containers:
+        - name: minio
+          image: minio/minio
+          command:
+            - sh
+            - -c
+            - >-
+              mkdir -p /data/loki-data && 
+              mkdir -p /data/loki-ruler && 
+              mkdir -p /data/mimir-data &&
+              minio server /data
+          env:
+            - name: MINIO_ROOT_USER
+              value: minio
+            - name: MINIO_ROOT_PASSWORD
+              value: supersecret
+          ports:
+            - name: http
+              containerPort: 9000
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+                claimName: minio-pvc
+
+---
+# Minio Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+spec:
+  ports:
+    - port: 9000
+      targetPort: 9000
+      name: http
+  selector:
+    app: minio
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

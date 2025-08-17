@@ -1,0 +1,19 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: chat-app
+build:
+  artifacts:
+    - image: ehharvey/app
+      ko:
+        main: ./cmd/server
+manifests:
+  rawYaml:
+    - k8s/app.yaml
+    - k8s/postgresql.yaml
+    - k8s/grafana.yaml
+    - k8s/loki.yaml
+    - k8s/tempo.yaml
+    - k8s/minio.yaml
+    - k8s/mimir.yaml
+    - k8s/otel.yaml

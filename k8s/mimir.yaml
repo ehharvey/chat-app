@@ -1,0 +1,94 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mimir-config
+data:
+  config.yaml: |
+    multitenancy_enabled: false
+
+    target: all,alertmanager,overrides-exporter
+
+    common:
+      storage:
+        backend: s3
+        s3:
+          endpoint: minio:9000
+          access_key_id: minio
+          secret_access_key: supersecret
+          insecure: true
+          bucket_name: mimir-data
+
+    blocks_storage:
+      storage_prefix: blocks
+      tsdb:
+        dir: /data/ingester
+
+    server:
+      log_level: info
+      http_listen_port: 9009
+
+    distributor:
+      ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: memberlist
+
+    ingester:
+      ring:
+        instance_addr: 127.0.0.1
+        kvstore:
+          store: memberlist
+        replication_factor: 1
+
+    ruler_storage:
+      backend: filesystem
+      filesystem:
+        dir: /tmp/mimir/rules
+
+    store_gateway:
+      sharding_ring:
+        replication_factor: 1
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mimir
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mimir
+  template:
+    metadata:
+      labels:
+        app: mimir
+    spec:
+      containers:
+        - name: mimir
+          image: grafana/mimir:latest
+          args:
+            - "-config.file=/etc/mimir/config.yaml"
+          ports:
+            - containerPort: 9009
+          volumeMounts:
+            - name: cfg
+              mountPath: /etc/mimir
+      volumes:
+        - name: cfg
+          configMap:
+            name: mimir-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mimir
+spec:
+  ports:
+    - port: 9009
+      targetPort: 9009
+      name: http
+  selector:
+    app: mimir
