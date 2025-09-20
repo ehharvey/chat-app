@@ -7,7 +7,7 @@ import (
 )
 
 type Service struct {
-	fooRepository FooRepository
+	fooRepository Repository
 }
 
 func (s Service) CreateFoo(ctx context.Context, input InsertOneFooParams) outcome.ServiceResult[FooModel] {

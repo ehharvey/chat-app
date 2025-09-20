@@ -2,7 +2,7 @@ package abc
 
 import "context"
 
-type FooRepository interface {
+type Repository interface {
 	InsertOneFoo(
 		ctx context.Context,
 		input InsertOneFooParams,

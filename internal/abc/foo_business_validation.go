@@ -7,7 +7,7 @@ import (
 	"github.com/ehharvey/chat-app/internal/outcome"
 )
 
-var createFooBusinessCheckFunctions = [...]outcome.BusinessValidationCheck[InsertOneFooParams, FooRepository]{
+var createFooBusinessCheckFunctions = [...]outcome.BusinessValidationCheck[InsertOneFooParams, Repository]{
 	{
 		Name: "checkValidFooNameLengh",
 		F:    checkFooNameUnique,
@@ -16,7 +16,7 @@ var createFooBusinessCheckFunctions = [...]outcome.BusinessValidationCheck[Inser
 
 func checkFooNameUnique(
 	ctx context.Context,
-	repository FooRepository,
+	repository Repository,
 	input InsertOneFooParams,
 ) *outcome.ValidationCheckError {
 	check, err := repository.CheckExistsFooByName(ctx, CheckExistsFooByNameParams(input))

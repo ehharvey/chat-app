@@ -10,5 +10,5 @@ import (
 )
 
 func TestInterfaceImplementations(t *testing.T) {
-	var _ abc.FooRepository = NewFooRepository(generated.Queries{})
+	var _ abc.Repository = NewFooRepository(generated.Queries{})
 }
