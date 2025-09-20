@@ -1,0 +1,29 @@
+flowchart LR
+    Client -->|HTTP Request| HttpRouter
+    subgraph ChatApp
+        subgraph HttpEvent
+            HttpRouter -->|/ServiceARoute| ServiceA
+            ServiceA --> ModelValidation1
+            ServiceA --> ModelValidation2
+            ServiceA --> BusinessValidationΩ
+            BusinessValidationΩ -.-> RepositoryA
+            ServiceA --> RepositoryA
+            HttpRouter -->|/ServiceBRoute| ServiceB
+            ServiceB --> ModelValidation3
+            ServiceB --> RepositoryB
+        end
+        subgraph AsynchronousWorkerA
+
+        end
+        subgraph AsynchronousWorkerB
+
+        end
+        subgraph Infrastructure
+
+        end
+    end
+
+    RepositoryA --> Infrastructure
+    RepositoryB --> Infrastructure
+
+    Infrastructure --> DB
