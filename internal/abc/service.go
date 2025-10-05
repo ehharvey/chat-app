@@ -8,6 +8,7 @@ import (
 
 type Service struct {
 	fooRepository Repository
+	barRepository Repository
 }
 
 func (s Service) CreateFoo(ctx context.Context, input InsertOneFooParams) outcome.ServiceResult[FooModel] {
@@ -20,4 +21,9 @@ func (s Service) CreateFoo(ctx context.Context, input InsertOneFooParams) outcom
 	// s.fooRepository.InsertOneFoo(ctx, input)
 
 	return outcome.ServiceResult[FooModel]{}
+}
+
+func (s Service) CreateBar(ctx context.Context, input InsertOneBarParams) outcome.ServiceResult[BarModel] {
+
+	return outcome.ServiceResult[BarModel]{}
 }
