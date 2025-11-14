@@ -5,15 +5,14 @@ import "github.com/spf13/viper"
 func InitializeConfig() {
 	// Here lies all of the default values for configs
 
-	// Database is currently unused
-	// // Database: internal/infrastructure/db
-	// viper.SetDefault("db.driver", "postgresql")
-	// viper.SetDefault("db.username", "postgresql")
-	// viper.SetDefault("db.password", "postgresql")
-	// viper.SetDefault("db.host", "postgresql")
-	// viper.SetDefault("db.port", 5432)
-	// viper.SetDefault("db.database_name", "app")
-	// viper.SetDefault("db.pool.max_conns", 10)
+	// Database: internal/infrastructure/db
+	viper.SetDefault("db.driver", "postgresql")
+	viper.SetDefault("db.username", "postgresql")
+	viper.SetDefault("db.password", "postgresql")
+	viper.SetDefault("db.host", "postgresql")
+	viper.SetDefault("db.port", 5432)
+	viper.SetDefault("db.database_name", "app")
+	viper.SetDefault("db.pool.max_conns", 10)
 
 	// Open telemetry is currently unused
 	// // opentelemetry: otel

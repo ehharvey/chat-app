@@ -11,13 +11,12 @@ type Service struct {
 }
 
 func (s Service) CreateFoo(ctx context.Context, input InsertOneFooParams) outcome.ServiceResult[FooModel] {
-	// TODO
-
-	// modelValidationFunctions := createFooModelCheckFunctions
-
-	// businessValidationFunctions := createFooBusinessCheckFunctions
-
-	// s.fooRepository.InsertOneFoo(ctx, input)
-
-	return outcome.ServiceResult[FooModel]{}
+	return outcome.PerformService(
+		ctx,
+		input,
+		s.fooRepository,
+		createFooModelCheckFunctions[:],
+		createFooBusinessCheckFunctions[:],
+		s.fooRepository.InsertOneFoo,
+	)
 }
