@@ -12,4 +12,14 @@ type Repository interface {
 		ctx context.Context,
 		input CheckExistsFooByNameParams,
 	) (CheckExistsFooByNameModel, error)
+
+	InsertOneBar(
+		ctx context.Context,
+		input InsertOneBarParams,
+	) (BarModel, error)
+
+	CheckExistsBarByName(
+		ctx context.Context,
+		input CheckExistsBarByNameParams,
+	) (CheckExistsBarByNameModel, error)
 }
